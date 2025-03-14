@@ -14,6 +14,8 @@ namespace Client
             string computerName = Environment.MachineName;
 
             string ipAddress = "";
+            string UserName = Environment.UserName;
+            string LoginTime = DateTime.Now.ToString();
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)
             {
@@ -24,7 +26,7 @@ namespace Client
                 }
             }
             string info;
-            info = computerName + " IP:" + ipAddress;
+            info = computerName + " IP:" + ipAddress + " User: " + UserName + "DateTime: " + LoginTime;
             websocket.Websock_Client_Node();
             websocket.WebSocketClient.Send(info);
 

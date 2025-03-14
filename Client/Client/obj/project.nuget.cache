@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "j4AGOZkA2j0=",
+  "dgSpecHash": "xSWVMspAms0=",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\source\\repos\\Client\\Client\\Client.csproj",
+  "projectFilePath": "C:\\Users\\user\\source\\repos\\MagomedovMagomed\\Server-Client\\Client\\Client\\Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\websocketsharp-netstandard\\1.0.1\\websocketsharp-netstandard.1.0.1.nupkg.sha512"
   ],
