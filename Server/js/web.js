@@ -4,13 +4,15 @@ const http = require('http');
 const path = require('path');
 const Websocket = require('websocket').server;
 
-const index = fs.readFileSync('./index.html', 'utf8');
+const index = path.join(__dirname, '../index.html');
+
+const staticFilesPath = path.join(__dirname, '../'); 
 
 const server = http.createServer((req, res) =>{
-    let filePath = '.' + req.url;
-    if(filePath === './')
+    let filePath = path.join(staticFilesPath, req.url);
+    if(req.url === '/')
     {
-        filePath = './index.html';
+        filePath = index;
     }
 
     const extname = path.extname(filePath);
@@ -18,6 +20,10 @@ const server = http.createServer((req, res) =>{
     if(extname === '.js')
     {
         contentType  = 'text.avascript';
+    }
+    if (extname === '.css') 
+    {
+        contentType = 'text/css';
     }
 
     fs.readFile(filePath, (err, content)=> {
@@ -66,9 +72,19 @@ ws.on('request',  req => {
     connection.on('message', message => {
         const data = message.utf8Data
         clients.forEach(client  => {
-            if (client.connected) 
+            // if (client.connected)
+            if (client !== connection && client.connected) 
             {
                 client.sendUTF(data);
+            }
+            else 
+            {
+                // Удаляем неактивных клиентов
+                const index = clients.indexOf(client);
+                if (index !== -1) 
+                {
+                    clients.splice(index, 1);
+                }
             }
         });
     });
@@ -78,7 +94,7 @@ ws.on('request',  req => {
         if (index !== -1) {
             clients.splice(index, 1);
         }
-        console.log('Клиент отключен: ' + connection.remoteAddress);
+        console.log('Клиент отключен. Осталось' + clients.length);
         console.log('Причина: ' + description + ' (код: ' + reasonCode + ')');
 
         // Уведомляем оставшихся клиентов
@@ -87,5 +103,13 @@ ws.on('request',  req => {
                 client.sendUTF('Пользователь отключился (Осталось: ' + clients.length + ')');
             }
         });
+    });
+
+    connection.on('error', (error) => {
+        console.error('Ошибка:', error);
+        const index = clients.indexOf(connection);
+        if (index !== -1) {
+            clients.splice(index, 1);
+        }
     });
 });

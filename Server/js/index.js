@@ -32,15 +32,6 @@ form.addEventListener('submit', e=>{
     input.value='';
 })
 
-function connectionOpen(e)
-{
-    status.innerHTML = "CONNECTION OPEN";
-    if(e.data != null)
-    {
-        printMessage("Message: " + e.data);
-    }
-}
-
 function messageReceived(e)
 {
     printMessage("Client Message: " + e.data);
@@ -49,11 +40,7 @@ function messageReceived(e)
 function connectionClosed()
 {
     status.innerHTML = "CONNECTION CLOSE";
-}
-
-function errorOccurred()
-{
-    printMessage("CONNECTION ERROR");
+    console.log("Соединение закрыто.");
 }
 
 // if(performance.navigation.type == 1)
